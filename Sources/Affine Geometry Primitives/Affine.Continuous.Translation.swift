@@ -6,7 +6,7 @@ import Algebra_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 
-extension Affine.Continuous.Continuous {
+extension Affine.Continuous {
     /// Two-dimensional displacement in coordinate space.
     ///
     /// Represents directional offset rather than absolute position, distinguishing it from `Point`.

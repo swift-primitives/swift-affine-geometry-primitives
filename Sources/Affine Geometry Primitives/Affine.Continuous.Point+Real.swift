@@ -11,12 +11,9 @@ public import Real_Primitives
 extension Affine.Continuous.Point where N == 2, Scalar: BinaryFloatingPoint & Numeric.Transcendental {
     /// Creates point at polar coordinates relative to origin.
     @inlinable
-    public static func polar(radius: Affine.Distance, angle: Radian<Scalar>) -> Self {
+    public static func polar(radius: Affine.Continuous<Scalar, Space>.Distance, angle: Radian<Scalar>) -> Self {
         let r = radius.rawValue
-        return Self(
-            x: Affine.X(r * angle.cos.value),
-            y: Affine.Y(r * angle.sin.value)
-        )
+        return Self(x: .init(r * angle.cos.value), y: .init(r * angle.sin.value))
     }
 
     /// Angular direction from origin to this point in radians.
@@ -27,8 +24,8 @@ extension Affine.Continuous.Point where N == 2, Scalar: BinaryFloatingPoint & Nu
 
     /// Distance from origin to this point.
     @inlinable
-    public var radius: Affine.Distance {
-        Affine.Distance(Scalar._sqrt(x.rawValue * x.rawValue + y.rawValue * y.rawValue))
+    public var radius: Affine.Continuous<Scalar, Space>.Distance {
+        .init(Scalar._sqrt(x.rawValue * x.rawValue + y.rawValue * y.rawValue))
     }
 
     /// Rotates point counterclockwise around origin by specified angle.
@@ -38,7 +35,7 @@ extension Affine.Continuous.Point where N == 2, Scalar: BinaryFloatingPoint & Nu
         let s = angle.sin.value
         let px = point.x.rawValue
         let py = point.y.rawValue
-        return Self(x: Affine.X(px * c - py * s), y: Affine.Y(px * s + py * c))
+        return Self(x: .init(px * c - py * s), y: .init(px * s + py * c))
     }
 
     /// Rotates point counterclockwise around origin by specified angle.
@@ -52,10 +49,10 @@ extension Affine.Continuous.Point where N == 2, Scalar: BinaryFloatingPoint & Nu
     public static func rotated(_ point: Self, by angle: Radian<Scalar>, around center: Self) -> Self {
         let dx = point.x - center.x
         let dy = point.y - center.y
-        let translated = Self(x: Affine.X.zero + dx, y: Affine.Y.zero + dy)
+        let translated = Self(x: Affine.Continuous<Scalar, Space>.X.zero + dx, y: Affine.Continuous<Scalar, Space>.Y.zero + dy)
         let rotated = Self.rotated(translated, by: angle)
-        let rdx = rotated.x - Affine.X.zero
-        let rdy = rotated.y - Affine.Y.zero
+        let rdx = rotated.x - Affine.Continuous<Scalar, Space>.X.zero
+        let rdy = rotated.y - Affine.Continuous<Scalar, Space>.Y.zero
         return Self(x: center.x + rdx, y: center.y + rdy)
     }
 

@@ -7,7 +7,7 @@ public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives
 
-extension Affine.Continuous.Continuous {
+extension Affine.Continuous {
     /// Two-dimensional affine transformation combining linear transformation and translation.
     ///
     /// Represents composition of dimensionless linear operations (rotation, scale, shear) with
@@ -96,7 +96,7 @@ extension Affine.Continuous.Transform where Scalar: AdditiveArithmetic {
 extension Affine.Continuous.Transform where Scalar: AdditiveArithmetic & ExpressibleByIntegerLiteral {
     /// Creates transform with translation and identity linear transformation.
     @inlinable
-    public init(translation: Affine.Continuous.Translation) {
+    public init(translation: Affine.Continuous<Scalar, Space>.Translation) {
         self.init(linear: .identity, translation: translation)
     }
 }
@@ -167,7 +167,7 @@ extension Affine.Continuous.Transform {
         ty: Linear<Scalar, Space>.Dy
     ) {
         self.linear = Linear<Scalar, Space>.Matrix(a: a, b: b, c: c, d: d)
-        self.translation = Affine.Continuous.Translation(dx: tx, dy: ty)
+        self.translation = Affine.Continuous<Scalar, Space>.Translation(dx: tx, dy: ty)
     }
 }
 
@@ -194,7 +194,10 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
 
         return Self(
             linear: newLinear,
-            translation: Affine.Continuous.Translation(dx: .init(newTxValue), dy: .init(newTyValue))
+            translation: Affine.Continuous<Scalar, Space>.Translation(
+                dx: .init(newTxValue),
+                dy: .init(newTyValue)
+            )
         )
     }
 
@@ -212,19 +215,19 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
 extension Affine.Continuous.Transform where Scalar: FloatingPoint & ExpressibleByIntegerLiteral {
     /// Creates pure translation transform from typed displacements.
     @inlinable
-    public static func translation(dx: Affine.Dx, dy: Affine.Dy) -> Self {
-        Self(linear: .identity, translation: Affine.Continuous.Translation(dx: dx, dy: dy))
+    public static func translation(dx: Linear<Scalar, Space>.Dx, dy: Linear<Scalar, Space>.Dy) -> Self {
+        Self(linear: .identity, translation: Affine.Continuous<Scalar, Space>.Translation(dx: dx, dy: dy))
     }
 
     /// Creates translation transform from displacement vector.
     @inlinable
     public static func translation(_ vector: Linear<Scalar, Space>.Vector<2>) -> Self {
-        Self(translation: Affine.Continuous.Translation(vector))
+        Self(translation: Affine.Continuous<Scalar, Space>.Translation(vector))
     }
 
     /// Creates translation transform from a Translation value.
     @inlinable
-    public static func translation(_ translation: Affine.Continuous.Translation) -> Self {
+    public static func translation(_ translation: Affine.Continuous<Scalar, Space>.Translation) -> Self {
         Self(linear: .identity, translation: translation)
     }
 
@@ -240,7 +243,7 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint & ExpressibleB
     ///
     /// Scale factors are dimensionless ratios.
     @inlinable
-    public static func scale(x: Affine.X, y: Affine.Y) -> Self {
+    public static func scale(x: Affine.Continuous<Scalar, Space>.X, y: Affine.Continuous<Scalar, Space>.Y) -> Self {
         Self(
             linear: Linear<Scalar, Space>.Matrix(
                 a: x.rawValue,
@@ -255,7 +258,7 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint & ExpressibleB
     ///
     /// Shear factors are dimensionless ratios.
     @inlinable
-    public static func shear(x: Affine.X, y: Affine.Y) -> Self {
+    public static func shear(x: Affine.Continuous<Scalar, Space>.X, y: Affine.Continuous<Scalar, Space>.Y) -> Self {
         Self(linear: Linear<Scalar, Space>.Matrix(a: 1, b: x.rawValue, c: y.rawValue, d: 1))
     }
 }
@@ -303,13 +306,13 @@ extension Affine.Continuous.Transform where Scalar == Float {
 extension Affine.Continuous.Transform where Scalar: FloatingPoint & ExpressibleByIntegerLiteral {
     /// Returns new transform with additional translation applied.
     @inlinable
-    public static func translated(_ transform: Self, dx: Affine.Dx, dy: Affine.Dy) -> Self {
+    public static func translated(_ transform: Self, dx: Linear<Scalar, Space>.Dx, dy: Linear<Scalar, Space>.Dy) -> Self {
         concatenating(transform, .translation(dx: dx, dy: dy))
     }
 
     /// Returns new transform with additional translation applied.
     @inlinable
-    public func translated(dx: Affine.Dx, dy: Affine.Dy) -> Self {
+    public func translated(dx: Linear<Scalar, Space>.Dx, dy: Linear<Scalar, Space>.Dy) -> Self {
         Self.translated(self, dx: dx, dy: dy)
     }
 
@@ -330,13 +333,13 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint & ExpressibleB
 
     /// Returns new transform with additional translation applied.
     @inlinable
-    public static func translated(_ transform: Self, by translation: Affine.Continuous.Translation) -> Self {
+    public static func translated(_ transform: Self, by translation: Affine.Continuous<Scalar, Space>.Translation) -> Self {
         concatenating(transform, .translation(translation))
     }
 
     /// Returns new transform with additional translation applied.
     @inlinable
-    public func translated(by translation: Affine.Continuous.Translation) -> Self {
+    public func translated(by translation: Affine.Continuous<Scalar, Space>.Translation) -> Self {
         Self.translated(self, by: translation)
     }
 
@@ -354,13 +357,13 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint & ExpressibleB
 
     /// Returns new transform with additional non-uniform scaling applied.
     @inlinable
-    public static func scaled(_ transform: Self, x: Affine.X, y: Affine.Y) -> Self {
+    public static func scaled(_ transform: Self, x: Affine.Continuous<Scalar, Space>.X, y: Affine.Continuous<Scalar, Space>.Y) -> Self {
         concatenating(transform, .scale(x: x, y: y))
     }
 
     /// Returns new transform with additional non-uniform scaling applied.
     @inlinable
-    public func scaled(x: Affine.X, y: Affine.Y) -> Self {
+    public func scaled(x: Affine.Continuous<Scalar, Space>.X, y: Affine.Continuous<Scalar, Space>.Y) -> Self {
         Self.scaled(self, x: x, y: y)
     }
 }
@@ -442,7 +445,7 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
 
         return Self(
             linear: invLinear,
-            translation: Affine.Continuous.Translation(negatedTranslation)
+            translation: Affine.Continuous<Scalar, Space>.Translation(negatedTranslation)
         )
     }
 
@@ -458,7 +461,7 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
 extension Affine.Continuous.Transform where Scalar: FloatingPoint {
     /// Applies transformation to a point, returning transformed position.
     @inlinable
-    public static func apply(_ transform: Self, to point: Affine.Continuous.Point<2>) -> Affine.Continuous.Point<2> {
+    public static func apply(_ transform: Self, to point: Affine.Continuous<Scalar, Space>.Point<2>) -> Affine.Continuous<Scalar, Space>.Point<2> {
         // Matrix multiplication mixes X and Y components: new_x = a*x + b*y + tx
         let px = point.x.rawValue
         let py = point.y.rawValue
@@ -466,12 +469,12 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
             transform.linear.a * px + transform.linear.b * py + transform.translation.dx.rawValue
         let newY =
             transform.linear.c * px + transform.linear.d * py + transform.translation.dy.rawValue
-        return Affine.Continuous.Point(x: Affine.X(newX), y: Affine.Y(newY))
+        return Affine.Continuous<Scalar, Space>.Point(x: .init(newX), y: .init(newY))
     }
 
     /// Applies transformation to a point, returning transformed position.
     @inlinable
-    public func apply(to point: Affine.Continuous.Point<2>) -> Affine.Continuous.Point<2> {
+    public func apply(to point: Affine.Continuous<Scalar, Space>.Point<2>) -> Affine.Continuous<Scalar, Space>.Point<2> {
         Self.apply(self, to: point)
     }
 
@@ -486,10 +489,7 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
         let vy = vector.dy.rawValue
         let newDx = transform.linear.a * vx + transform.linear.b * vy
         let newDy = transform.linear.c * vx + transform.linear.d * vy
-        return Linear<Scalar, Space>.Vector(
-            dx: Linear<Scalar, Space>.Dx(newDx),
-            dy: Linear<Scalar, Space>.Dy(newDy)
-        )
+        return Linear<Scalar, Space>.Vector(dx: .init(newDx), dy: .init(newDy))
     }
 
     /// Applies linear transformation to vector, ignoring translation component.
