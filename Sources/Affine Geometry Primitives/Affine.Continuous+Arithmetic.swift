@@ -5,6 +5,9 @@
 //  Created by Coen ten Thije Boonkkamp on 14/12/2025.
 //
 
+import Affine_Primitives
+import Algebra_Linear_Primitives
+
 // MARK: - Affine Arithmetic
 
 extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {

@@ -2,7 +2,6 @@
 // A fixed-size coordinate with compile-time known dimensions.
 
 import Affine_Primitives
-import Algebra_Aggregate_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 
