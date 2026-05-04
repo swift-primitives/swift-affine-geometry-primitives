@@ -149,20 +149,20 @@ extension Affine.Continuous.Point where N == 2 {
     @inlinable
     public var x: Affine.Continuous<Scalar, Space>.X {
         get { .init(coordinates[0]) }
-        set { coordinates[0] = newValue.rawValue }
+        set { coordinates[0] = newValue.underlying }
     }
 
     /// Vertical coordinate position.
     @inlinable
     public var y: Affine.Continuous<Scalar, Space>.Y {
         get { .init(coordinates[1]) }
-        set { coordinates[1] = newValue.rawValue }
+        set { coordinates[1] = newValue.underlying }
     }
 
     /// Creates 2D point from type-safe coordinate components.
     @inlinable
     public init(x: Affine.Continuous<Scalar, Space>.X, y: Affine.Continuous<Scalar, Space>.Y) {
-        self.init([x.rawValue, y.rawValue])
+        self.init([x.underlying, y.underlying])
     }
 }
 
@@ -173,21 +173,21 @@ extension Affine.Continuous.Point where N == 3 {
     @inlinable
     public var x: Affine.Continuous<Scalar, Space>.X {
         get { .init(coordinates[0]) }
-        set { coordinates[0] = newValue.rawValue }
+        set { coordinates[0] = newValue.underlying }
     }
 
     /// Vertical coordinate position.
     @inlinable
     public var y: Affine.Continuous<Scalar, Space>.Y {
         get { .init(coordinates[1]) }
-        set { coordinates[1] = newValue.rawValue }
+        set { coordinates[1] = newValue.underlying }
     }
 
     /// Depth coordinate position.
     @inlinable
     public var z: Affine.Continuous<Scalar, Space>.Z {
         get { .init(coordinates[2]) }
-        set { coordinates[2] = newValue.rawValue }
+        set { coordinates[2] = newValue.underlying }
     }
 
     /// Creates 3D point from type-safe coordinate components.
@@ -197,7 +197,7 @@ extension Affine.Continuous.Point where N == 3 {
         y: Affine.Continuous<Scalar, Space>.Y,
         z: Affine.Continuous<Scalar, Space>.Z
     ) {
-        self.init([x.rawValue, y.rawValue, z.rawValue])
+        self.init([x.underlying, y.underlying, z.underlying])
     }
 
     /// Creates 3D point by extending 2D point with depth coordinate.
@@ -214,28 +214,28 @@ extension Affine.Continuous.Point where N == 4 {
     @inlinable
     public var x: Affine.Continuous<Scalar, Space>.X {
         get { .init(coordinates[0]) }
-        set { coordinates[0] = newValue.rawValue }
+        set { coordinates[0] = newValue.underlying }
     }
 
     /// Vertical coordinate position.
     @inlinable
     public var y: Affine.Continuous<Scalar, Space>.Y {
         get { .init(coordinates[1]) }
-        set { coordinates[1] = newValue.rawValue }
+        set { coordinates[1] = newValue.underlying }
     }
 
     /// Depth coordinate position.
     @inlinable
     public var z: Affine.Continuous<Scalar, Space>.Z {
         get { .init(coordinates[2]) }
-        set { coordinates[2] = newValue.rawValue }
+        set { coordinates[2] = newValue.underlying }
     }
 
     /// Homogeneous coordinate for projective transformations.
     @inlinable
     public var w: Affine.Continuous<Scalar, Space>.W {
         get { .init(coordinates[3]) }
-        set { coordinates[3] = newValue.rawValue }
+        set { coordinates[3] = newValue.underlying }
     }
 
     /// Creates 4D point from type-safe coordinate components.
@@ -246,7 +246,7 @@ extension Affine.Continuous.Point where N == 4 {
         z: Affine.Continuous<Scalar, Space>.Z,
         w: Affine.Continuous<Scalar, Space>.W
     ) {
-        self.init([x.rawValue, y.rawValue, z.rawValue, w.rawValue])
+        self.init([x.underlying, y.underlying, z.underlying, w.underlying])
     }
 
     /// Creates 4D point by extending 3D point with homogeneous coordinate.

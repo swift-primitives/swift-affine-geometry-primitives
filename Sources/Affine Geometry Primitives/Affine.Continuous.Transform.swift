@@ -66,8 +66,8 @@ extension Affine.Continuous.Transform: Hashable where Scalar: Hashable {}
             try container.encode(b, forKey: .b)
             try container.encode(c, forKey: .c)
             try container.encode(d, forKey: .d)
-            try container.encode(tx.rawValue, forKey: .tx)
-            try container.encode(ty.rawValue, forKey: .ty)
+            try container.encode(tx.underlying, forKey: .tx)
+            try container.encode(ty.underlying, forKey: .ty)
         }
     }
 #endif
@@ -183,10 +183,10 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
 
         // Translation part: apply transform's linear to other's translation, then add transform's translation
         // Matrix math mixes X and Y components, so we work with raw scalar values
-        let otherTx = other.translation.dx.rawValue
-        let otherTy = other.translation.dy.rawValue
-        let selfTx = transform.translation.dx.rawValue
-        let selfTy = transform.translation.dy.rawValue
+        let otherTx = other.translation.dx.underlying
+        let otherTy = other.translation.dy.underlying
+        let selfTx = transform.translation.dx.underlying
+        let selfTy = transform.translation.dy.underlying
 
         let newTxValue = transform.linear.a * otherTx + transform.linear.b * otherTy + selfTx
         let newTyValue = transform.linear.c * otherTx + transform.linear.d * otherTy + selfTy
@@ -245,10 +245,10 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint & ExpressibleB
     public static func scale(x: Affine.Continuous<Scalar, Space>.X, y: Affine.Continuous<Scalar, Space>.Y) -> Self {
         Self(
             linear: Linear<Scalar, Space>.Matrix(
-                a: x.rawValue,
+                a: x.underlying,
                 b: 0,
                 c: 0,
-                d: y.rawValue
+                d: y.underlying
             )
         )
     }
@@ -258,7 +258,7 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint & ExpressibleB
     /// Shear factors are dimensionless ratios.
     @inlinable
     public static func shear(x: Affine.Continuous<Scalar, Space>.X, y: Affine.Continuous<Scalar, Space>.Y) -> Self {
-        Self(linear: Linear<Scalar, Space>.Matrix(a: 1, b: x.rawValue, c: y.rawValue, d: 1))
+        Self(linear: Linear<Scalar, Space>.Matrix(a: 1, b: x.underlying, c: y.underlying, d: 1))
     }
 }
 
@@ -462,12 +462,12 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
     @inlinable
     public static func apply(_ transform: Self, to point: Affine.Continuous<Scalar, Space>.Point<2>) -> Affine.Continuous<Scalar, Space>.Point<2> {
         // Matrix multiplication mixes X and Y components: new_x = a*x + b*y + tx
-        let px = point.x.rawValue
-        let py = point.y.rawValue
+        let px = point.x.underlying
+        let py = point.y.underlying
         let newX =
-            transform.linear.a * px + transform.linear.b * py + transform.translation.dx.rawValue
+            transform.linear.a * px + transform.linear.b * py + transform.translation.dx.underlying
         let newY =
-            transform.linear.c * px + transform.linear.d * py + transform.translation.dy.rawValue
+            transform.linear.c * px + transform.linear.d * py + transform.translation.dy.underlying
         return Affine.Continuous<Scalar, Space>.Point(x: .init(newX), y: .init(newY))
     }
 
@@ -484,8 +484,8 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
         to vector: Linear<Scalar, Space>.Vector<2>
     ) -> Linear<Scalar, Space>.Vector<2> {
         // Matrix multiplication mixes X and Y components: new_x = a*x + b*y
-        let vx = vector.dx.rawValue
-        let vy = vector.dy.rawValue
+        let vx = vector.dx.underlying
+        let vy = vector.dy.underlying
         let newDx = transform.linear.a * vx + transform.linear.b * vy
         let newDy = transform.linear.c * vx + transform.linear.d * vy
         return Linear<Scalar, Space>.Vector(dx: .init(newDx), dy: .init(newDy))

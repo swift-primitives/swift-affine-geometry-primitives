@@ -3,6 +3,7 @@
 //
 import Dimension_Primitives
 import Testing
+import Tagged_Primitives_Standard_Library_Integration
 //
 @testable import Affine_Geometry_Primitives
 @testable import Affine_Primitives

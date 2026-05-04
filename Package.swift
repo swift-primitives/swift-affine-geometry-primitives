@@ -20,6 +20,7 @@ let package = Package(
         .package(path: "../swift-dimension-primitives"),
         .package(path: "../swift-format-primitives"),
         .package(path: "../swift-numeric-primitives"),
+        .package(path: "../swift-tagged-primitives"),
     ],
     targets: [
         .target(
@@ -35,7 +36,8 @@ let package = Package(
         .testTarget(
             name: "Affine Geometry Primitives Tests",
             dependencies: [
-                "Affine Geometry Primitives"
+                "Affine Geometry Primitives",
+                .product(name: "Tagged Primitives Standard Library Integration", package: "swift-tagged-primitives"),
             ]
         ),
     ],
