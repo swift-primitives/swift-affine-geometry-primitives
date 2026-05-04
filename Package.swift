@@ -12,7 +12,11 @@ let package = Package(
         .visionOS(.v26),
     ],
     products: [
-        .library(name: "Affine Geometry Primitives", targets: ["Affine Geometry Primitives"])
+        .library(name: "Affine Geometry Primitives", targets: ["Affine Geometry Primitives"]),
+        .library(
+            name: "Affine Geometry Primitives Test Support",
+            targets: ["Affine Geometry Primitives Test Support"]
+        ),
     ],
     dependencies: [
         .package(path: "../swift-affine-primitives"),
@@ -33,11 +37,20 @@ let package = Package(
                 .product(name: "Real Primitives", package: "swift-numeric-primitives"),
             ]
         ),
+        .target(
+            name: "Affine Geometry Primitives Test Support",
+            dependencies: [
+                "Affine Geometry Primitives",
+                .product(name: "Tagged Primitives Test Support", package: "swift-tagged-primitives"),
+            ],
+            path: "Tests/Support"
+        ),
         .testTarget(
             name: "Affine Geometry Primitives Tests",
             dependencies: [
                 "Affine Geometry Primitives",
                 .product(name: "Tagged Primitives Standard Library Integration", package: "swift-tagged-primitives"),
+                "Affine Geometry Primitives Test Support",
             ]
         ),
     ],
