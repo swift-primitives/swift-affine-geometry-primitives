@@ -16,7 +16,7 @@ concurrency:
 jobs:
   # Build + test matrix — see swift-institute/.github/.github/workflows/swift-ci.yml
   ci:
-    uses: swift-institute/.github/.github/workflows/swift-ci.yml@main
+    uses: swift-primitives/.github/.github/workflows/swift-ci.yml@main
     with:
       cache-key-prefix: swift63-spm-v1
       enable-private-repos: true
