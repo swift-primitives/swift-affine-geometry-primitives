@@ -493,8 +493,7 @@ extension Affine.Continuous.Transform where Scalar: FloatingPoint {
 
     /// Applies linear transformation to vector, ignoring translation component.
     @inlinable
-    public func apply(to vector: Linear<Scalar, Space>.Vector<2>) -> Linear<Scalar, Space>.Vector<2>
-    {
+    public func apply(to vector: Linear<Scalar, Space>.Vector<2>) -> Linear<Scalar, Space>.Vector<2> {
         Self.apply(self, to: vector)
     }
 }

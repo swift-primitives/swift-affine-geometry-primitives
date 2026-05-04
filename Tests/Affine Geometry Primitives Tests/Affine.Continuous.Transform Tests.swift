@@ -2,12 +2,14 @@
 /// Tests for Affine.Continuous.Transform
 //
 import Dimension_Primitives
-import Testing
 import Tagged_Primitives_Standard_Library_Integration
+import Testing
+
 //
 @testable import Affine_Geometry_Primitives
 @testable import Affine_Primitives
 @testable import Algebra_Linear_Primitives
+
 //
 @Suite
 struct `Affine_Continuous_Transform Tests` {
@@ -20,33 +22,33 @@ struct `Affine_Continuous_Transform Tests` {
     typealias Translation = A.Translation
     typealias Dx = L.Dx
     typealias Dy = L.Dy
-//
+    //
     static func isApprox(_ a: A.X, _ b: A.X, tol: Double = 1e-10) -> Bool {
         let diff = a - b
         let tolerance = A.Dx(tol)
         return diff > -tolerance && diff < tolerance
     }
-//
+    //
     static func isApprox(_ a: A.Y, _ b: A.Y, tol: Double = 1e-10) -> Bool {
         let diff = a - b
         let tolerance = A.Dy(tol)
         return diff > -tolerance && diff < tolerance
     }
-//
+    //
     static func isApprox(_ a: L.Dx, _ b: L.Dx, tol: Double = 1e-10) -> Bool {
         let diff = a - b
         let tolerance = L.Dx(tol)
         return diff > -tolerance && diff < tolerance
     }
-//
+    //
     static func isApprox(_ a: L.Dy, _ b: L.Dy, tol: Double = 1e-10) -> Bool {
         let diff = a - b
         let tolerance = L.Dy(tol)
         return diff > -tolerance && diff < tolerance
     }
-//
+    //
     // MARK: - Identity Tests
-//
+    //
     @Suite
     struct `Identity` {
         @Test
@@ -59,12 +61,12 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(id.tx == 0)
             #expect(id.ty == 0)
         }
-//
+        //
         @Test(arguments: [
             Point2(x: 0, y: 0),
             Point2(x: 3, y: 4),
             Point2(x: -5, y: 7),
-            Point2(x: 1.5, y: -2.5)
+            Point2(x: 1.5, y: -2.5),
         ])
         func identityPreservesPoints(p: Point2) {
             let id = Transform.identity
@@ -72,7 +74,7 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(transformed.x == p.x)
             #expect(transformed.y == p.y)
         }
-//
+        //
         @Test
         func `Identity preserves points instance method`() {
             let id = Transform.identity
@@ -82,9 +84,9 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(transformed.y == 4)
         }
     }
-//
+    //
     // MARK: - Translation Tests
-//
+    //
     @Suite
     struct `Translations` {
         @Test
@@ -95,7 +97,7 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.x == 11)
             #expect(result.y == 22)
         }
-//
+        //
         @Test
         func `Translation from vector`() {
             let v = Vec2(dx: 10, dy: 20)
@@ -105,7 +107,7 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.x == 11)
             #expect(result.y == 22)
         }
-//
+        //
         @Test
         func `Translation from Translation value`() {
             let translation = Translation(dx: 10, dy: 20)
@@ -115,16 +117,16 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.x == 11)
             #expect(result.y == 22)
         }
-//
+        //
         @Test
         func `Translation has identity linear part`() {
             let t = Transform.translation(dx: 10, dy: 20)
             #expect(t.linear == Matrix2x2.identity)
         }
     }
-//
+    //
     // MARK: - Scaling Tests
-//
+    //
     @Suite
     struct `Scaling` {
         @Test
@@ -135,7 +137,7 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.x == 6)
             #expect(result.y == 8)
         }
-//
+        //
         @Test
         func `Scaling by zero collapses point`() {
             let t = Transform.scale(0)
@@ -144,7 +146,7 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.x == 0)
             #expect(result.y == 0)
         }
-//
+        //
         @Test
         func `Negative scaling inverts coordinates`() {
             let t = Transform.scale(-1)
@@ -154,9 +156,9 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.y == -4)
         }
     }
-//
+    //
     // MARK: - Rotation Tests
-//
+    //
     @Suite
     struct `Rotation` {
         @Test
@@ -167,7 +169,7 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(isApprox(result.x, A.X(0)))
             #expect(isApprox(result.y, A.Y(1)))
         }
-//
+        //
         @Test
         func `Rotation by 180 degrees`() {
             let t = Transform.rotation(Degree(180))
@@ -176,7 +178,7 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(isApprox(result.x, A.X(-1)))
             #expect(isApprox(result.y, A.Y(0)))
         }
-//
+        //
         @Test
         func `Rotation by 270 degrees`() {
             let t = Transform.rotation(Degree(270))
@@ -185,11 +187,11 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(isApprox(result.x, A.X(0)))
             #expect(isApprox(result.y, A.Y(-1)))
         }
-//
+        //
         @Test(arguments: [
             (Point2(x: 3, y: 4), 45.0),
             (Point2(x: 1, y: 1), 90.0),
-            (Point2(x: 5, y: 0), 180.0)
+            (Point2(x: 5, y: 0), 180.0),
         ])
         func rotationPreservesDistance(p: Point2, degrees: Double) {
             let t = Transform.rotation(Degree(degrees))
@@ -199,9 +201,9 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(abs(originalDist - resultDist) < 1e-10)
         }
     }
-//
+    //
     // MARK: - Composition Tests
-//
+    //
     @Suite
     struct `Composition` {
         @Test
@@ -209,26 +211,26 @@ struct `Affine_Continuous_Transform Tests` {
             let scale = Transform.scale(2)
             let translate = Transform.translation(dx: 10, dy: 0)
             let combined = Transform.concatenating(translate, scale)
-//
+            //
             let p = Point2(x: 1, y: 0)
             let result = Transform.apply(combined, to: p)
             // scale: (1,0) -> (2,0), translate: (2,0) -> (12,0)
             #expect(result.x == 12)
             #expect(result.y == 0)
         }
-//
+        //
         @Test
         func `Concatenation instance method`() {
             let scale = Transform.scale(2)
             let translate = Transform.translation(dx: 10, dy: 0)
             let combined = translate.concatenating(scale)
-//
+            //
             let p = Point2(x: 1, y: 0)
             let result = combined.apply(to: p)
             #expect(result.x == 12)
             #expect(result.y == 0)
         }
-//
+        //
         @Test
         func `Compose multiple transforms`() {
             let composed = Transform.composed(
@@ -241,13 +243,13 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.x == 1)
             #expect(result.y == 2)
         }
-//
+        //
         @Test
         func `Compose from array`() {
             let transforms = [
                 Transform.translation(dx: 1, dy: 0),
                 Transform.scale(2),
-                Transform.translation(dx: 0, dy: 1)
+                Transform.translation(dx: 0, dy: 1),
             ]
             let composed = Transform.composed(transforms)
             let p = Point2(x: 0, y: 0)
@@ -255,26 +257,26 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.x == 1)
             #expect(result.y == 2)
         }
-//
+        //
         @Test
         func `Identity is neutral for composition`() {
             let t = Transform.translation(dx: 5, dy: 10)
             let composed1 = Transform.concatenating(t, .identity)
             let composed2 = Transform.concatenating(.identity, t)
-//
+            //
             let p = Point2(x: 1, y: 1)
             let result1 = Transform.apply(composed1, to: p)
             let result2 = Transform.apply(composed2, to: p)
-//
+            //
             #expect(result1.x == 6)
             #expect(result1.y == 11)
             #expect(result2.x == 6)
             #expect(result2.y == 11)
         }
     }
-//
+    //
     // MARK: - Inversion Tests
-//
+    //
     @Suite
     struct `Inversion` {
         @Test
@@ -282,19 +284,19 @@ struct `Affine_Continuous_Transform Tests` {
             let t = Transform.identity
             #expect(t.determinant == 1)
         }
-//
+        //
         @Test
         func `Identity is invertible`() {
             let t = Transform.identity
             #expect(t.isInvertible)
         }
-//
+        //
         @Test
         func `Singular transform is not invertible`() {
             let singular = Transform(a: 1.0, b: 2.0, c: 2.0, d: 4.0, tx: 0.0, ty: 0.0)
             #expect(!singular.isInvertible)
         }
-//
+        //
         @Test
         func `Invert translation`() {
             let t = Transform.translation(dx: 10, dy: 20)
@@ -302,15 +304,15 @@ struct `Affine_Continuous_Transform Tests` {
                 #expect(Bool(false), "Transform should be invertible")
                 return
             }
-//
+            //
             let p = Point2(x: 1, y: 2)
             let transformed = Transform.apply(t, to: p)
             let restored = Transform.apply(inv, to: transformed)
-//
+            //
             #expect(isApprox(restored.x, p.x))
             #expect(isApprox(restored.y, p.y))
         }
-//
+        //
         @Test
         func `Invert scaling`() {
             let t = Transform.scale(2)
@@ -318,15 +320,15 @@ struct `Affine_Continuous_Transform Tests` {
                 #expect(Bool(false), "Transform should be invertible")
                 return
             }
-//
+            //
             let p = Point2(x: 3, y: 4)
             let transformed = Transform.apply(t, to: p)
             let restored = Transform.apply(inv, to: transformed)
-//
+            //
             #expect(isApprox(restored.x, p.x))
             #expect(isApprox(restored.y, p.y))
         }
-//
+        //
         @Test
         func `Invert rotation`() {
             let t = Transform.rotation(Degree(45))
@@ -334,18 +336,18 @@ struct `Affine_Continuous_Transform Tests` {
                 #expect(Bool(false), "Transform should be invertible")
                 return
             }
-//
+            //
             let p = Point2(x: 3, y: 4)
             let transformed = Transform.apply(t, to: p)
             let restored = Transform.apply(inv, to: transformed)
-//
+            //
             #expect(isApprox(restored.x, p.x))
             #expect(isApprox(restored.y, p.y))
         }
     }
-//
+    //
     // MARK: - Vector Transform Tests
-//
+    //
     @Suite
     struct `Vector Transform` {
         @Test
@@ -357,7 +359,7 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.dx == 6)
             #expect(result.dy == 8)
         }
-//
+        //
         @Test
         func `Identity preserves vectors`() {
             let v = Vec2(dx: 3, dy: 4)
@@ -365,7 +367,7 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(result.dx == 3)
             #expect(result.dy == 4)
         }
-//
+        //
         @Test
         func `Rotation transforms vectors`() {
             let t = Transform.rotation(Degree(90))
@@ -375,9 +377,9 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(isApprox(result.dy, L.Dy(1)))
         }
     }
-//
+    //
     // MARK: - Equatable Tests
-//
+    //
     @Suite
     struct `Equatable` {
         @Test
@@ -388,12 +390,12 @@ struct `Affine_Continuous_Transform Tests` {
             #expect(a == b)
             #expect(a != c)
         }
-//
+        //
         @Test
         func `Identity equals identity`() {
             #expect(Transform.identity == Transform.identity)
         }
-//
+        //
         @Test
         func `Different transforms are not equal`() {
             let scale = Transform.scale(2)

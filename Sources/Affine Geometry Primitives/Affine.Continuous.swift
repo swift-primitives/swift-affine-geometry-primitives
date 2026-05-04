@@ -97,4 +97,3 @@ extension Affine.Continuous {
     /// See ``Dimension/Area``
     public typealias Area = Dimension_Primitives.Area<Space>.Value<Scalar>
 }
-

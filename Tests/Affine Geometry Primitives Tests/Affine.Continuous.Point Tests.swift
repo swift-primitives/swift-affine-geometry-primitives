@@ -2,12 +2,14 @@
 /// Tests for Affine.Continuous.Point
 //
 import Dimension_Primitives
-import Testing
 import Tagged_Primitives_Standard_Library_Integration
+import Testing
+
 //
 @testable import Affine_Geometry_Primitives
 @testable import Affine_Primitives
 @testable import Algebra_Linear_Primitives
+
 //
 @Suite
 struct `Affine_Continuous_Point Tests` {
@@ -26,9 +28,9 @@ struct `Affine_Continuous_Point Tests` {
     typealias Dy = L.Dy
     typealias Dz = L.Dz
     typealias Distance = A.Distance
-//
+    //
     // MARK: - Construction Tests
-//
+    //
     @Suite
     struct `Construction` {
         @Test
@@ -39,14 +41,14 @@ struct `Affine_Continuous_Point Tests` {
             #expect(p.x == 3)
             #expect(p.y == 4)
         }
-//
+        //
         @Test
         func `2D point construction with literals`() {
             let p = Point2(x: 3, y: 4)
             #expect(p.x == 3)
             #expect(p.y == 4)
         }
-//
+        //
         @Test
         func `3D point construction`() {
             let p = Point3(x: 1, y: 2, z: 3)
@@ -54,7 +56,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(p.y == 2)
             #expect(p.z == 3)
         }
-//
+        //
         @Test
         func `3D point from 2D point and z`() {
             let p2 = Point2(x: 1, y: 2)
@@ -64,7 +66,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(p3.y == 2)
             #expect(p3.z == 3)
         }
-//
+        //
         @Test
         func `4D point construction`() {
             let p = Point4(x: 1, y: 2, z: 3, w: 4)
@@ -73,7 +75,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(p.z == 3)
             #expect(p.w == 4)
         }
-//
+        //
         @Test
         func `4D point from 3D point and w`() {
             let p3 = Point3(x: 1, y: 2, z: 3)
@@ -84,7 +86,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(p4.z == 3)
             #expect(p4.w == 4)
         }
-//
+        //
         @Test
         func `Point from coordinates array`() {
             var coords = InlineArray<2, Double>(repeating: 0)
@@ -95,9 +97,9 @@ struct `Affine_Continuous_Point Tests` {
             #expect(p.y == 2)
         }
     }
-//
+    //
     // MARK: - Zero/Origin Tests
-//
+    //
     @Suite
     struct `Zero` {
         @Test
@@ -106,7 +108,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(origin.x == 0)
             #expect(origin.y == 0)
         }
-//
+        //
         @Test
         func `3D zero point`() {
             let origin = Point3.zero
@@ -115,36 +117,36 @@ struct `Affine_Continuous_Point Tests` {
             #expect(origin.z == 0)
         }
     }
-//
+    //
     // MARK: - Affine Arithmetic Tests
-//
+    //
     @Suite
     struct `Affine Arithmetic` {
         @Test(arguments: [
             (Point2(x: 5, y: 8), Point2(x: 2, y: 3), 3 as Dx, 5 as Dy),
             (Point2(x: 0, y: 0), Point2(x: 1, y: 1), -1 as Dx, -1 as Dy),
-            (Point2(x: 10, y: 20), Point2(x: 10, y: 20), 0 as Dx, 0 as Dy)
+            (Point2(x: 10, y: 20), Point2(x: 10, y: 20), 0 as Dx, 0 as Dy),
         ])
         func pointMinusPoint(p1: Point2, p2: Point2, expectedDx: Dx, expectedDy: Dy) {
             let v: Vec2 = p1 - p2
             #expect(v.dx == expectedDx)
             #expect(v.dy == expectedDy)
         }
-//
+        //
         @Test(arguments: [
             (Point2(x: 1, y: 2), Vec2(dx: 3, dy: 4), 4 as X, 6 as Y),
             (Point2(x: 0, y: 0), Vec2(dx: 1, dy: 1), 1 as X, 1 as Y),
-            (Point2(x: -5, y: -3), Vec2(dx: 5, dy: 3), 0 as X, 0 as Y)
+            (Point2(x: -5, y: -3), Vec2(dx: 5, dy: 3), 0 as X, 0 as Y),
         ])
         func pointPlusVector(p: Point2, v: Vec2, expectedX: X, expectedY: Y) {
             let result: Point2 = p + v
             #expect(result.x == expectedX)
             #expect(result.y == expectedY)
         }
-//
+        //
         @Test(arguments: [
             (Point2(x: 5, y: 6), Vec2(dx: 2, dy: 3), 3 as X, 3 as Y),
-            (Point2(x: 0, y: 0), Vec2(dx: 1, dy: 1), -1 as X, -1 as Y)
+            (Point2(x: 0, y: 0), Vec2(dx: 1, dy: 1), -1 as X, -1 as Y),
         ])
         func pointMinusVector(p: Point2, v: Vec2, expectedX: X, expectedY: Y) {
             let result: Point2 = p - v
@@ -152,9 +154,9 @@ struct `Affine_Continuous_Point Tests` {
             #expect(result.y == expectedY)
         }
     }
-//
+    //
     // MARK: - Translation Tests
-//
+    //
     @Suite
     struct `Translation` {
         @Test
@@ -164,7 +166,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(translated.x == 4)
             #expect(translated.y == 6)
         }
-//
+        //
         @Test
         func `Translate by deltas instance method (2D)`() {
             let p = Point2(x: 1, y: 2)
@@ -172,7 +174,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(translated.x == 4)
             #expect(translated.y == 6)
         }
-//
+        //
         @Test
         func `Translate by vector (2D)`() {
             let p = Point2(x: 1, y: 2)
@@ -181,7 +183,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(translated.x == 4)
             #expect(translated.y == 6)
         }
-//
+        //
         @Test
         func `Translate by vector instance method (2D)`() {
             let p = Point2(x: 1, y: 2)
@@ -190,7 +192,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(translated.x == 4)
             #expect(translated.y == 6)
         }
-//
+        //
         @Test
         func `Translate by deltas (3D)`() {
             let p = Point3(x: 1, y: 2, z: 3)
@@ -199,7 +201,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(translated.y == 4)
             #expect(translated.z == 6)
         }
-//
+        //
         @Test
         func `Translate by vector (3D)`() {
             let p = Point3(x: 1, y: 2, z: 3)
@@ -210,9 +212,9 @@ struct `Affine_Continuous_Point Tests` {
             #expect(translated.z == 6)
         }
     }
-//
+    //
     // MARK: - Vector Between Points Tests
-//
+    //
     @Suite
     struct `Vector Between Points` {
         @Test
@@ -223,7 +225,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(v.dx == 3)
             #expect(v.dy == 4)
         }
-//
+        //
         @Test
         func `Vector to another point (2D)`() {
             let p1 = Point2(x: 1, y: 2)
@@ -232,7 +234,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(v.dx == 3)
             #expect(v.dy == 4)
         }
-//
+        //
         @Test
         func `Vector from point to another (3D)`() {
             let p1 = Point3(x: 1, y: 2, z: 3)
@@ -243,38 +245,38 @@ struct `Affine_Continuous_Point Tests` {
             #expect(v.dz == 6)
         }
     }
-//
+    //
     // MARK: - Distance Tests
-//
+    //
     @Suite
     struct `Distance Tests` {
         @Test(arguments: [
             (Point2(x: 0, y: 0), Point2(x: 3, y: 4), 25.0 as A.Area),
             (Point2(x: 1, y: 1), Point2(x: 4, y: 5), 25.0 as A.Area),
-            (Point2(x: 0, y: 0), Point2(x: 0, y: 0), 0.0 as A.Area)
+            (Point2(x: 0, y: 0), Point2(x: 0, y: 0), 0.0 as A.Area),
         ])
         func distanceSquared2D(p1: Point2, p2: Point2, expected: A.Area) {
             let distSq = Point2.distance.squared(from: p1, to: p2)
             #expect(distSq == expected)
         }
-//
+        //
         @Test
         func `Distance squared instance method (2D)`() {
             let p1 = Point2(x: 0, y: 0)
             let p2 = Point2(x: 3, y: 4)
             #expect(p1.distance.squared(to: p2) == 25)
         }
-//
+        //
         @Test(arguments: [
             (Point2(x: 0, y: 0), Point2(x: 3, y: 4), 5 as Distance),
             (Point2(x: 0, y: 0), Point2(x: 1, y: 0), 1 as Distance),
-            (Point2(x: 0, y: 0), Point2(x: 0, y: 0), 0 as Distance)
+            (Point2(x: 0, y: 0), Point2(x: 0, y: 0), 0 as Distance),
         ])
         func distance2D(p1: Point2, p2: Point2, expected: Distance) {
             let dist = Point2.distance.from(p1, to: p2)
             #expect(dist == expected)
         }
-//
+        //
         @Test
         func `Distance instance method (2D)`() {
             let p1 = Point2(x: 0, y: 0)
@@ -282,14 +284,14 @@ struct `Affine_Continuous_Point Tests` {
             let expected: Distance = 5
             #expect(p1.distance(to: p2) == expected)
         }
-//
+        //
         @Test
         func `Distance squared (3D)`() {
             let p1 = Point3(x: 0, y: 0, z: 0)
             let p2 = Point3(x: 1, y: 2, z: 2)
             #expect(Point3.distance.squared(from: p1, to: p2) == 9)
         }
-//
+        //
         @Test
         func `Distance (3D)`() {
             let p1 = Point3(x: 0, y: 0, z: 0)
@@ -298,23 +300,23 @@ struct `Affine_Continuous_Point Tests` {
             #expect(Point3.distance.from(p1, to: p2) == expected)
         }
     }
-//
+    //
     // MARK: - Interpolation Tests
-//
+    //
     @Suite
     struct `Interpolation` {
         @Test(arguments: [
             (Point2(x: 0, y: 0), Point2(x: 10, y: 20), 0.0 as Scale<1, Double>, 0 as X, 0 as Y),
             (Point2(x: 0, y: 0), Point2(x: 10, y: 20), 0.5 as Scale<1, Double>, 5 as X, 10 as Y),
             (Point2(x: 0, y: 0), Point2(x: 10, y: 20), 1.0 as Scale<1, Double>, 10 as X, 20 as Y),
-            (Point2(x: 0, y: 0), Point2(x: 10, y: 20), 0.25 as Scale<1, Double>, 2.5 as X, 5 as Y)
+            (Point2(x: 0, y: 0), Point2(x: 10, y: 20), 0.25 as Scale<1, Double>, 2.5 as X, 5 as Y),
         ])
         func lerp(p1: Point2, p2: Point2, t: Scale<1, Double>, expectedX: X, expectedY: Y) {
             let result = Point2.lerp(from: p1, to: p2, t: t)
             #expect(result.x == expectedX)
             #expect(result.y == expectedY)
         }
-//
+        //
         @Test
         func `Linear interpolation instance method`() {
             let p1 = Point2(x: 0, y: 0)
@@ -324,18 +326,18 @@ struct `Affine_Continuous_Point Tests` {
             #expect(mid.x == 5)
             #expect(mid.y == 10)
         }
-//
+        //
         @Test(arguments: [
             (Point2(x: 0, y: 0), Point2(x: 10, y: 20), 5 as X, 10 as Y),
             (Point2(x: -5, y: -10), Point2(x: 5, y: 10), 0 as X, 0 as Y),
-            (Point2(x: 1, y: 3), Point2(x: 5, y: 7), 3 as X, 5 as Y)
+            (Point2(x: 1, y: 3), Point2(x: 5, y: 7), 3 as X, 5 as Y),
         ])
         func midpoint(p1: Point2, p2: Point2, expectedX: X, expectedY: Y) {
             let mid = Point2.midpoint(from: p1, to: p2)
             #expect(mid.x == expectedX)
             #expect(mid.y == expectedY)
         }
-//
+        //
         @Test
         func `Midpoint instance method`() {
             let p1 = Point2(x: 0, y: 0)
@@ -345,9 +347,9 @@ struct `Affine_Continuous_Point Tests` {
             #expect(mid.y == 10)
         }
     }
-//
+    //
     // MARK: - Equatable Tests
-//
+    //
     @Suite
     struct `Equatable` {
         @Test
@@ -358,7 +360,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(a == b)
             #expect(a != c)
         }
-//
+        //
         @Test
         func `Point equality (3D)`() {
             let a = Point3(x: 1, y: 2, z: 3)
@@ -368,9 +370,9 @@ struct `Affine_Continuous_Point Tests` {
             #expect(a != c)
         }
     }
-//
+    //
     // MARK: - Subscript Tests
-//
+    //
     @Suite
     struct `Subscript` {
         @Test
@@ -378,16 +380,16 @@ struct `Affine_Continuous_Point Tests` {
             var p = Point2(x: 1, y: 2)
             #expect(p[0] == 1)
             #expect(p[1] == 2)
-//
+            //
             p[0] = 10
             p[1] = 20
             #expect(p[0] == 10)
             #expect(p[1] == 20)
         }
     }
-//
+    //
     // MARK: - Map Tests
-//
+    //
     @Suite
     struct `Map` {
         @Test
@@ -397,7 +399,7 @@ struct `Affine_Continuous_Point Tests` {
             #expect(doubled[0] == 6)
             #expect(doubled[1] == 8)
         }
-//
+        //
         @Test
         func `Map via init`() throws {
             let p = Point2(x: 3, y: 4)
@@ -406,9 +408,9 @@ struct `Affine_Continuous_Point Tests` {
             #expect(doubled[1] == 8)
         }
     }
-//
+    //
     // MARK: - Zip Tests
-//
+    //
     @Suite
     struct `Zip` {
         @Test

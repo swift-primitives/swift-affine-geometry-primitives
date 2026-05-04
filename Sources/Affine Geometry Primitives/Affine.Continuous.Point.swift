@@ -291,8 +291,7 @@ extension Affine.Continuous.Point where N == 2, Scalar: AdditiveArithmetic {
 
     /// Returns point translated by displacement vector.
     @inlinable
-    public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<2>) -> Self
-    {
+    public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<2>) -> Self {
         Self(x: point.x + vector.dx, y: point.y + vector.dy)
     }
 
@@ -427,8 +426,7 @@ extension Affine.Continuous.Point where N == 3, Scalar: AdditiveArithmetic {
 
     /// Returns point translated by displacement vector.
     @inlinable
-    public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<3>) -> Self
-    {
+    public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<3>) -> Self {
         Self(x: point.x + vector.dx, y: point.y + vector.dy, z: point.z + vector.dz)
     }
 
