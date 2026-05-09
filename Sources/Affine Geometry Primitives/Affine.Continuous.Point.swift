@@ -108,7 +108,7 @@ extension Affine.Continuous.Point {
 extension Affine.Continuous.Point {
     /// Creates a point by transforming each coordinate of another point.
     @inlinable
-    public init<U, E: Error>(
+    public init<U, E: Swift.Error>(
         _ other: borrowing Affine.Continuous<U, Space>.Point<N>,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
@@ -121,7 +121,7 @@ extension Affine.Continuous.Point {
 
     /// Transforms each coordinate using the given closure.
     @inlinable
-    public func map<Result, E: Error>(
+    public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Affine.Continuous<Result, Space>.Point<N> {
         var result = InlineArray<N, Result>(repeating: try transform(coordinates[0]))
