@@ -10,7 +10,7 @@
 // ===----------------------------------------------------------------------===//
 
 import Affine_Primitives
-public import Algebra_Linear_Primitives
+public import Linear_Primitives
 public import Dimension_Primitives
 
 /// Namespace for continuous affine space primitives parameterized by scalar type and coordinate space.

@@ -2,7 +2,7 @@
 // A fixed-size coordinate with compile-time known dimensions.
 
 import Affine_Primitives
-public import Algebra_Linear_Primitives
+public import Linear_Primitives
 public import Dimension_Primitives
 
 extension Affine.Continuous {

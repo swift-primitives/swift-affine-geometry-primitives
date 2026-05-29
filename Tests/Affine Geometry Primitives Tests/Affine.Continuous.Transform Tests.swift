@@ -8,7 +8,7 @@ import Testing
 //
 @testable import Affine_Geometry_Primitives
 @testable import Affine_Primitives
-@testable import Algebra_Linear_Primitives
+@testable import Linear_Primitives
 
 //
 @Suite

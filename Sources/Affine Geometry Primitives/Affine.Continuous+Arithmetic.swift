@@ -6,7 +6,7 @@
 //
 
 import Affine_Primitives
-import Algebra_Linear_Primitives
+import Linear_Primitives
 
 // MARK: - Affine Arithmetic
 

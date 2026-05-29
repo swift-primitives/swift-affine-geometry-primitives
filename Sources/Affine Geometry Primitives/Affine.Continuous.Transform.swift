@@ -2,7 +2,7 @@
 // A 2D affine transformation: linear transformation + translation.
 
 import Affine_Primitives
-public import Algebra_Linear_Primitives
+public import Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives
 

@@ -2,7 +2,7 @@
 // Polar coordinates and rotation for 2D points with Real scalar types.
 
 import Affine_Primitives
-import Algebra_Linear_Primitives
+import Linear_Primitives
 public import Dimension_Primitives
 import Real_Primitives
 
