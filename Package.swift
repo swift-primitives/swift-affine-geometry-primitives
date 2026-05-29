@@ -19,11 +19,11 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../swift-affine-primitives"),
-        .package(path: "../swift-linear-primitives"),
-        .package(path: "../swift-dimension-primitives"),
-        .package(path: "../swift-numeric-primitives"),
-        .package(path: "../swift-tagged-primitives"),
+        .package(url: "https://github.com/swift-primitives/swift-affine-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-linear-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-dimension-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-numeric-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-tagged-primitives.git", branch: "main"),
     ],
     targets: [
         .target(
