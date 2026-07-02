@@ -67,7 +67,7 @@ Requires Swift 6.3.1; minimum deployment targets macOS 26, iOS 26, tvOS 26, watc
 ## Community
 
 <!-- BEGIN: discussion -->
-*Discussion thread will be created at first public flip.*
+*Discussion thread will be created at first public release.*
 <!-- END: discussion -->
 
 ## License
