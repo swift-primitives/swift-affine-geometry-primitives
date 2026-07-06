@@ -1,6 +1,6 @@
 # .github/metadata.yaml
 # Triaged by AI-assisted bulk pass (2026-04-29).
-description: "Affine geometry types for Swift."
+description: "Phantom-typed affine-space points, vectors, and 2D transforms that prevent mixing coordinate systems for Swift."
 topics:
   - primitives
   - affine
