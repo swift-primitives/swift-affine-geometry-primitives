@@ -2,8 +2,8 @@
 // A 2D affine transformation: linear transformation + translation.
 
 import Affine_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 public import Real_Primitives
 
 extension Affine.Continuous {
@@ -49,6 +49,12 @@ extension Affine.Continuous.Transform: Hashable where Scalar: Hashable {}
             case a, b, c, d, tx, ty
         }
 
+        // reason: `init(from:)`/`encode(to:)` below are forced by the external
+        // `Decodable`/`Encodable` protocols (stdlib) — `any Decoder`/`any Encoder`
+        // and untyped `throws` are the exact conformance requirement.
+        // swiftlint:disable no_any_protocol_existential typed_throws_required
+
+        /// Decodes a transform from its encoded matrix and translation components.
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let a = try container.decode(Scalar.self, forKey: .a)
@@ -60,7 +66,9 @@ extension Affine.Continuous.Transform: Hashable where Scalar: Hashable {}
             self.init(a: a, b: b, c: c, d: d, tx: tx, ty: ty)
         }
 
+        /// Encodes the transform's matrix and translation components.
         public func encode(to encoder: any Encoder) throws {
+            // swiftlint:enable no_any_protocol_existential typed_throws_required
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(a, forKey: .a)
             try container.encode(b, forKey: .b)
@@ -154,8 +162,12 @@ extension Affine.Continuous.Transform {
     /// Creates transform from matrix components with type-safe translation.
     ///
     /// - Parameters:
-    ///   - a, b, c, d: Linear transformation coefficients
-    ///   - tx, ty: Type-safe translation displacement components
+    ///   - a: Linear transformation coefficient (row 0, column 0)
+    ///   - b: Linear transformation coefficient (row 0, column 1)
+    ///   - c: Linear transformation coefficient (row 1, column 0)
+    ///   - d: Linear transformation coefficient (row 1, column 1)
+    ///   - tx: Type-safe horizontal translation displacement component
+    ///   - ty: Type-safe vertical translation displacement component
     @inlinable
     public init(
         a: Scalar,

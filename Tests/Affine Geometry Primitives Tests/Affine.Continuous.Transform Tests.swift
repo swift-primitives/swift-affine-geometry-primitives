@@ -1,5 +1,5 @@
-/// Affine.Continuous.Transform Tests.swift
-/// Tests for Affine.Continuous.Transform
+// Affine.Continuous.Transform Tests.swift
+// Tests for Affine.Continuous.Transform
 //
 import Dimension_Primitives
 import Tagged_Primitives_Standard_Library_Integration

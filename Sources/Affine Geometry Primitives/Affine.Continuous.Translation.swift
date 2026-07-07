@@ -2,8 +2,8 @@
 // A 2D translation (displacement) in an affine space.
 
 import Affine_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 
 extension Affine.Continuous {
     /// Two-dimensional displacement in coordinate space.
@@ -66,12 +66,14 @@ extension Affine.Continuous.Translation where Scalar: AdditiveArithmetic {
 // MARK: - AdditiveArithmetic
 
 extension Affine.Continuous.Translation where Scalar: AdditiveArithmetic {
+    /// Adds two translations component-wise.
     @inlinable
     @_disfavoredOverload
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         Self(dx: lhs.dx + rhs.dx, dy: lhs.dy + rhs.dy)
     }
 
+    /// Subtracts two translations component-wise.
     @inlinable
     @_disfavoredOverload
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {

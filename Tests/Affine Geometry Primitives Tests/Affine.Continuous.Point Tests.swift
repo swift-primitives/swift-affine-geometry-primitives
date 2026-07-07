@@ -1,5 +1,5 @@
-/// Affine.Continuous.Point Tests.swift
-/// Tests for Affine.Continuous.Point
+// Affine.Continuous.Point Tests.swift
+// Tests for Affine.Continuous.Point
 //
 import Dimension_Primitives
 import Tagged_Primitives_Standard_Library_Integration
