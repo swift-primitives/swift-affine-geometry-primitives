@@ -387,35 +387,37 @@ extension Affine.Continuous.Point where N == 2, Scalar: FloatingPoint {
     /// Distance calculations between 2D points.
     public struct Distance2 {
         var point: Affine.Continuous<Scalar, Space>.Point<2>
+    }
+}
 
-        /// Squared distance between two points (avoids the square root).
-        public static func squared(
-            from point: Affine.Continuous<Scalar, Space>.Point<2>,
-            to other: Affine.Continuous<Scalar, Space>.Point<2>
-        ) -> Affine.Continuous<Scalar, Space>.Area {
-            let dx = other.x - point.x
-            let dy = other.y - point.y
-            return dx * dx + dy * dy
-        }
+extension Affine.Continuous.Point.Distance2 where N == 2, Scalar: FloatingPoint {
+    /// Squared distance between two points (avoids the square root).
+    public static func squared(
+        from point: Affine.Continuous<Scalar, Space>.Point<2>,
+        to other: Affine.Continuous<Scalar, Space>.Point<2>
+    ) -> Affine.Continuous<Scalar, Space>.Area {
+        let dx = other.x - point.x
+        let dy = other.y - point.y
+        return dx * dx + dy * dy
+    }
 
-        /// Squared distance from the anchor point to another (avoids the square root).
-        public func squared(to other: Affine.Continuous<Scalar, Space>.Point<2>) -> Affine.Continuous<Scalar, Space>.Area {
-            Self.squared(from: point, to: other)
-        }
+    /// Squared distance from the anchor point to another (avoids the square root).
+    public func squared(to other: Affine.Continuous<Scalar, Space>.Point<2>) -> Affine.Continuous<Scalar, Space>.Area {
+        Self.squared(from: point, to: other)
+    }
 
-        /// Distance between two points.
-        public static func from(
-            _ point: Affine.Continuous<Scalar, Space>.Point<2>,
-            to other: Affine.Continuous<Scalar, Space>.Point<2>
-        ) -> Affine.Continuous<Scalar, Space>.Distance {
-            // sqrt(Area) = Magnitude = Distance
-            sqrt(squared(from: point, to: other))
-        }
+    /// Distance between two points.
+    public static func from(
+        _ point: Affine.Continuous<Scalar, Space>.Point<2>,
+        to other: Affine.Continuous<Scalar, Space>.Point<2>
+    ) -> Affine.Continuous<Scalar, Space>.Distance {
+        // sqrt(Area) = Magnitude = Distance
+        sqrt(squared(from: point, to: other))
+    }
 
-        /// Distance from the anchor point to another.
-        public func callAsFunction(to other: Affine.Continuous<Scalar, Space>.Point<2>) -> Affine.Continuous<Scalar, Space>.Distance {
-            Self.from(point, to: other)
-        }
+    /// Distance from the anchor point to another.
+    public func callAsFunction(to other: Affine.Continuous<Scalar, Space>.Point<2>) -> Affine.Continuous<Scalar, Space>.Distance {
+        Self.from(point, to: other)
     }
 }
 
@@ -489,35 +491,37 @@ extension Affine.Continuous.Point where N == 3, Scalar: FloatingPoint {
     /// Distance calculations between 3D points.
     public struct Distance3 {
         var point: Affine.Continuous<Scalar, Space>.Point<3>
+    }
+}
 
-        /// Squared distance between two points (avoids the square root).
-        public static func squared(
-            from point: Affine.Continuous<Scalar, Space>.Point<3>,
-            to other: Affine.Continuous<Scalar, Space>.Point<3>
-        ) -> Affine.Continuous<Scalar, Space>.Area {
-            let dx = other.x - point.x
-            let dy = other.y - point.y
-            let dz = other.z - point.z
-            return dx * dx + dy * dy + dz * dz
-        }
+extension Affine.Continuous.Point.Distance3 where N == 3, Scalar: FloatingPoint {
+    /// Squared distance between two points (avoids the square root).
+    public static func squared(
+        from point: Affine.Continuous<Scalar, Space>.Point<3>,
+        to other: Affine.Continuous<Scalar, Space>.Point<3>
+    ) -> Affine.Continuous<Scalar, Space>.Area {
+        let dx = other.x - point.x
+        let dy = other.y - point.y
+        let dz = other.z - point.z
+        return dx * dx + dy * dy + dz * dz
+    }
 
-        /// Squared distance from the anchor point to another (avoids the square root).
-        public func squared(to other: Affine.Continuous<Scalar, Space>.Point<3>) -> Affine.Continuous<Scalar, Space>.Area {
-            Self.squared(from: point, to: other)
-        }
+    /// Squared distance from the anchor point to another (avoids the square root).
+    public func squared(to other: Affine.Continuous<Scalar, Space>.Point<3>) -> Affine.Continuous<Scalar, Space>.Area {
+        Self.squared(from: point, to: other)
+    }
 
-        /// Distance between two points.
-        public static func from(
-            _ point: Affine.Continuous<Scalar, Space>.Point<3>,
-            to other: Affine.Continuous<Scalar, Space>.Point<3>
-        ) -> Affine.Continuous<Scalar, Space>.Distance {
-            // sqrt(Area) = Magnitude = Distance
-            sqrt(squared(from: point, to: other))
-        }
+    /// Distance between two points.
+    public static func from(
+        _ point: Affine.Continuous<Scalar, Space>.Point<3>,
+        to other: Affine.Continuous<Scalar, Space>.Point<3>
+    ) -> Affine.Continuous<Scalar, Space>.Distance {
+        // sqrt(Area) = Magnitude = Distance
+        sqrt(squared(from: point, to: other))
+    }
 
-        /// Distance from the anchor point to another.
-        public func callAsFunction(to other: Affine.Continuous<Scalar, Space>.Point<3>) -> Affine.Continuous<Scalar, Space>.Distance {
-            Self.from(point, to: other)
-        }
+    /// Distance from the anchor point to another.
+    public func callAsFunction(to other: Affine.Continuous<Scalar, Space>.Point<3>) -> Affine.Continuous<Scalar, Space>.Distance {
+        Self.from(point, to: other)
     }
 }
