@@ -127,7 +127,7 @@ struct `Affine_Continuous_Point Tests` {
             (Point2(x: 0, y: 0), Point2(x: 1, y: 1), -1 as Dx, -1 as Dy),
             (Point2(x: 10, y: 20), Point2(x: 10, y: 20), 0 as Dx, 0 as Dy),
         ])
-        func pointMinusPoint(p1: Point2, p2: Point2, expectedDx: Dx, expectedDy: Dy) {
+        func `Point minus point`(p1: Point2, p2: Point2, expectedDx: Dx, expectedDy: Dy) {
             let v: Vec2 = p1 - p2
             #expect(v.dx == expectedDx)
             #expect(v.dy == expectedDy)
@@ -138,7 +138,7 @@ struct `Affine_Continuous_Point Tests` {
             (Point2(x: 0, y: 0), Vec2(dx: 1, dy: 1), 1 as X, 1 as Y),
             (Point2(x: -5, y: -3), Vec2(dx: 5, dy: 3), 0 as X, 0 as Y),
         ])
-        func pointPlusVector(p: Point2, v: Vec2, expectedX: X, expectedY: Y) {
+        func `Point plus vector`(p: Point2, v: Vec2, expectedX: X, expectedY: Y) {
             let result: Point2 = p + v
             #expect(result.x == expectedX)
             #expect(result.y == expectedY)
@@ -148,7 +148,7 @@ struct `Affine_Continuous_Point Tests` {
             (Point2(x: 5, y: 6), Vec2(dx: 2, dy: 3), 3 as X, 3 as Y),
             (Point2(x: 0, y: 0), Vec2(dx: 1, dy: 1), -1 as X, -1 as Y),
         ])
-        func pointMinusVector(p: Point2, v: Vec2, expectedX: X, expectedY: Y) {
+        func `Point minus vector`(p: Point2, v: Vec2, expectedX: X, expectedY: Y) {
             let result: Point2 = p - v
             #expect(result.x == expectedX)
             #expect(result.y == expectedY)
@@ -255,7 +255,7 @@ struct `Affine_Continuous_Point Tests` {
             (Point2(x: 1, y: 1), Point2(x: 4, y: 5), 25.0 as A.Area),
             (Point2(x: 0, y: 0), Point2(x: 0, y: 0), 0.0 as A.Area),
         ])
-        func distanceSquared2D(p1: Point2, p2: Point2, expected: A.Area) {
+        func `Distance squared 2D`(p1: Point2, p2: Point2, expected: A.Area) {
             let distSq = Point2.distance.squared(from: p1, to: p2)
             #expect(distSq == expected)
         }
@@ -272,7 +272,7 @@ struct `Affine_Continuous_Point Tests` {
             (Point2(x: 0, y: 0), Point2(x: 1, y: 0), 1 as Distance),
             (Point2(x: 0, y: 0), Point2(x: 0, y: 0), 0 as Distance),
         ])
-        func distance2D(p1: Point2, p2: Point2, expected: Distance) {
+        func `Distance 2D`(p1: Point2, p2: Point2, expected: Distance) {
             let dist = Point2.distance.from(p1, to: p2)
             #expect(dist == expected)
         }

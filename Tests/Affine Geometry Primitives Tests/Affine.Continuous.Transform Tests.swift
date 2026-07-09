@@ -68,7 +68,7 @@ struct `Affine_Continuous_Transform Tests` {
             Point2(x: -5, y: 7),
             Point2(x: 1.5, y: -2.5),
         ])
-        func identityPreservesPoints(p: Point2) {
+        func `Identity preserves points`(p: Point2) {
             let id = Transform.identity
             let transformed = Transform.apply(id, to: p)
             #expect(transformed.x == p.x)
@@ -193,7 +193,7 @@ struct `Affine_Continuous_Transform Tests` {
             (Point2(x: 1, y: 1), 90.0),
             (Point2(x: 5, y: 0), 180.0),
         ])
-        func rotationPreservesDistance(p: Point2, degrees: Double) {
+        func `Rotation preserves distance`(p: Point2, degrees: Double) {
             let t = Transform.rotation(Degree(degrees))
             let result = Transform.apply(t, to: p)
             let originalDist = p.distance(to: .zero)
