@@ -76,11 +76,6 @@ extension Affine.Continuous {
 
 #if !hasFeature(Embedded)
     extension Affine.Continuous.Point: Codable where Scalar: Codable {
-        // reason: `init(from:)`/`encode(to:)` below are forced by the external
-        // `Decodable`/`Encodable` protocols (stdlib) — `any Decoder`/`any Encoder`
-        // and untyped `throws` are the exact conformance requirement.
-        // swiftlint:disable no_any_protocol_existential typed_throws_required
-
         /// Decodes a point from its encoded coordinate sequence.
         public init(from decoder: any Decoder) throws {
             var container = try decoder.unkeyedContainer()
@@ -93,7 +88,6 @@ extension Affine.Continuous {
 
         /// Encodes the point's coordinates as a sequence.
         public func encode(to encoder: any Encoder) throws {
-            // swiftlint:enable no_any_protocol_existential typed_throws_required
             var container = encoder.unkeyedContainer()
             for i in 0..<N {
                 try container.encode(coordinates[i])

@@ -34,7 +34,14 @@ extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
         rhs: borrowing Self
     ) -> Linear<Scalar, Space>.Vector<N> {
         var result = InlineArray<N, Scalar>(repeating: lhs.coordinates[0] - rhs.coordinates[0])
-        (1..<N).forEach { i in
+        // WORKAROUND: plain for-loop, not .forEach.
+        // WHY: the IterationIntent autofix rewrite to .forEach breaks the
+        // linux-release build ('lhs' is borrowed and cannot be consumed) —
+        // the closure capture of a borrowing parameter is unsound.
+        // WHEN TO REMOVE: once the autofix soundness gap is fixed and
+        // reverified not to capture borrowing parameters.
+        // TRACKING: swift-foundations/swift-institute-linter-rules#49
+        for i in 1..<N {
             result[i] = lhs.coordinates[i] - rhs.coordinates[i]
         }
         return Linear<Scalar, Space>.Vector(result)
@@ -50,7 +57,14 @@ extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
         rhs: borrowing Linear<Scalar, Space>.Vector<N>
     ) -> Self {
         var result = lhs.coordinates
-        (0..<N).forEach { i in
+        // WORKAROUND: plain for-loop, not .forEach.
+        // WHY: the IterationIntent autofix rewrite to .forEach breaks the
+        // linux-release build ('lhs' is borrowed and cannot be consumed) —
+        // the closure capture of a borrowing parameter is unsound.
+        // WHEN TO REMOVE: once the autofix soundness gap is fixed and
+        // reverified not to capture borrowing parameters.
+        // TRACKING: swift-foundations/swift-institute-linter-rules#49
+        for i in 0..<N {
             result[i] = lhs.coordinates[i] + rhs.components[i]
         }
         return Self(result)
@@ -64,7 +78,14 @@ extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
         rhs: borrowing Linear<Scalar, Space>.Vector<N>
     ) -> Self {
         var result = lhs.coordinates
-        (0..<N).forEach { i in
+        // WORKAROUND: plain for-loop, not .forEach.
+        // WHY: the IterationIntent autofix rewrite to .forEach breaks the
+        // linux-release build ('lhs' is borrowed and cannot be consumed) —
+        // the closure capture of a borrowing parameter is unsound.
+        // WHEN TO REMOVE: once the autofix soundness gap is fixed and
+        // reverified not to capture borrowing parameters.
+        // TRACKING: swift-foundations/swift-institute-linter-rules#49
+        for i in 0..<N {
             result[i] = lhs.coordinates[i] - rhs.components[i]
         }
         return Self(result)
