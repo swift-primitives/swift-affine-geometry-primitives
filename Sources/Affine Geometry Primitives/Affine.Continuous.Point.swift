@@ -53,7 +53,7 @@ extension Affine.Continuous.Point: Hashable where Scalar: Hashable {
     /// Hashes each coordinate into the given hasher.
     @inlinable
     public func hash(into hasher: inout Hasher) {
-        for i in 0..<N {
+        (0..<N).forEach { i in
             hasher.combine(coordinates[i])
         }
     }
@@ -273,7 +273,7 @@ extension Affine.Continuous.Point {
     @inlinable
     public static func zip(_ a: Self, _ b: Self, _ combine: (Scalar, Scalar) -> Scalar) -> Self {
         var result = a.coordinates
-        for i in 0..<N {
+        (0..<N).forEach { i in
             result[i] = combine(a.coordinates[i], b.coordinates[i])
         }
         return Self(result)

@@ -34,7 +34,7 @@ extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
         rhs: borrowing Self
     ) -> Linear<Scalar, Space>.Vector<N> {
         var result = InlineArray<N, Scalar>(repeating: lhs.coordinates[0] - rhs.coordinates[0])
-        for i in 1..<N {
+        (1..<N).forEach { i in
             result[i] = lhs.coordinates[i] - rhs.coordinates[i]
         }
         return Linear<Scalar, Space>.Vector(result)
@@ -50,7 +50,7 @@ extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
         rhs: borrowing Linear<Scalar, Space>.Vector<N>
     ) -> Self {
         var result = lhs.coordinates
-        for i in 0..<N {
+        (0..<N).forEach { i in
             result[i] = lhs.coordinates[i] + rhs.components[i]
         }
         return Self(result)
@@ -64,7 +64,7 @@ extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
         rhs: borrowing Linear<Scalar, Space>.Vector<N>
     ) -> Self {
         var result = lhs.coordinates
-        for i in 0..<N {
+        (0..<N).forEach { i in
             result[i] = lhs.coordinates[i] - rhs.components[i]
         }
         return Self(result)
