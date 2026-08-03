@@ -49,11 +49,6 @@ extension Affine.Continuous.Transform: Hashable where Scalar: Hashable {}
             case a, b, c, d, tx, ty
         }
 
-        // reason: `init(from:)`/`encode(to:)` below are forced by the external
-        // `Decodable`/`Encodable` protocols (stdlib) — `any Decoder`/`any Encoder`
-        // and untyped `throws` are the exact conformance requirement.
-        // swiftlint:disable no_any_protocol_existential typed_throws_required
-
         /// Decodes a transform from its encoded matrix and translation components.
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -68,7 +63,6 @@ extension Affine.Continuous.Transform: Hashable where Scalar: Hashable {}
 
         /// Encodes the transform's matrix and translation components.
         public func encode(to encoder: any Encoder) throws {
-            // swiftlint:enable no_any_protocol_existential typed_throws_required
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(a, forKey: .a)
             try container.encode(b, forKey: .b)
