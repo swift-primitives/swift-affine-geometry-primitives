@@ -206,7 +206,10 @@ extension Affine.Continuous.Point where N == 3 {
 
     /// Creates 3D point by extending 2D point with depth coordinate.
     @inlinable
-    public init(_ point2: Affine.Continuous<Scalar, Space>.Point2, z: Affine.Continuous<Scalar, Space>.Z) {
+    public init(
+        _ point2: Affine.Continuous<Scalar, Space>.Point2,
+        z: Affine.Continuous<Scalar, Space>.Z
+    ) {
         self.init(x: point2.x, y: point2.y, z: z)
     }
 }
@@ -255,7 +258,10 @@ extension Affine.Continuous.Point where N == 4 {
 
     /// Creates 4D point by extending 3D point with homogeneous coordinate.
     @inlinable
-    public init(_ point3: Affine.Continuous<Scalar, Space>.Point3, w: Affine.Continuous<Scalar, Space>.W) {
+    public init(
+        _ point3: Affine.Continuous<Scalar, Space>.Point3,
+        w: Affine.Continuous<Scalar, Space>.W
+    ) {
         self.init(x: point3.x, y: point3.y, z: point3.z, w: w)
     }
 }
@@ -295,7 +301,8 @@ extension Affine.Continuous.Point where N == 2, Scalar: AdditiveArithmetic {
 
     /// Returns point translated by displacement vector.
     @inlinable
-    public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<2>) -> Self {
+    public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<2>) -> Self
+    {
         Self(x: point.x + vector.dx, y: point.y + vector.dy)
     }
 
@@ -396,7 +403,9 @@ extension Affine.Continuous.Point.Distance2 where N == 2, Scalar: FloatingPoint 
     }
 
     /// Squared distance from the anchor point to another (avoids the square root).
-    public func squared(to other: Affine.Continuous<Scalar, Space>.Point<2>) -> Affine.Continuous<Scalar, Space>.Area {
+    public func squared(
+        to other: Affine.Continuous<Scalar, Space>.Point<2>
+    ) -> Affine.Continuous<Scalar, Space>.Area {
         Self.squared(from: point, to: other)
     }
 
@@ -410,7 +419,9 @@ extension Affine.Continuous.Point.Distance2 where N == 2, Scalar: FloatingPoint 
     }
 
     /// Distance from the anchor point to another.
-    public func callAsFunction(to other: Affine.Continuous<Scalar, Space>.Point<2>) -> Affine.Continuous<Scalar, Space>.Distance {
+    public func callAsFunction(
+        to other: Affine.Continuous<Scalar, Space>.Point<2>
+    ) -> Affine.Continuous<Scalar, Space>.Distance {
         Self.from(point, to: other)
     }
 }
@@ -441,7 +452,8 @@ extension Affine.Continuous.Point where N == 3, Scalar: AdditiveArithmetic {
 
     /// Returns point translated by displacement vector.
     @inlinable
-    public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<3>) -> Self {
+    public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<3>) -> Self
+    {
         Self(x: point.x + vector.dx, y: point.y + vector.dy, z: point.z + vector.dz)
     }
 
@@ -501,7 +513,9 @@ extension Affine.Continuous.Point.Distance3 where N == 3, Scalar: FloatingPoint 
     }
 
     /// Squared distance from the anchor point to another (avoids the square root).
-    public func squared(to other: Affine.Continuous<Scalar, Space>.Point<3>) -> Affine.Continuous<Scalar, Space>.Area {
+    public func squared(
+        to other: Affine.Continuous<Scalar, Space>.Point<3>
+    ) -> Affine.Continuous<Scalar, Space>.Area {
         Self.squared(from: point, to: other)
     }
 
@@ -515,7 +529,9 @@ extension Affine.Continuous.Point.Distance3 where N == 3, Scalar: FloatingPoint 
     }
 
     /// Distance from the anchor point to another.
-    public func callAsFunction(to other: Affine.Continuous<Scalar, Space>.Point<3>) -> Affine.Continuous<Scalar, Space>.Distance {
+    public func callAsFunction(
+        to other: Affine.Continuous<Scalar, Space>.Point<3>
+    ) -> Affine.Continuous<Scalar, Space>.Distance {
         Self.from(point, to: other)
     }
 }
