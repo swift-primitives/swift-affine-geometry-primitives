@@ -1,32 +1,8 @@
-//
-//  File.swift
-//  swift-standards
-//
-//  Created by Coen ten Thije Boonkkamp on 14/12/2025.
-//
-
 import Affine_Primitives
 import Linear_Primitives
 
-// MARK: - Affine Arithmetic
-
 extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
-    /// Computes displacement vector from `rhs` to `lhs`.
-    ///
-    /// Returns the vector representing the displacement needed to move from point `rhs` to point `lhs`.
-    /// This fundamental affine operation converts position difference into directional displacement.
-    ///
-    /// ## Note
-    ///
-    /// Adding two points (`Point + Point`) is intentionally unsupported as it lacks geometric meaning.
-    ///
-    /// ## Example
-    ///
-    /// ```swift
-    /// let p = Affine<Double>.Point(x: 10, y: 20)
-    /// let q = Affine<Double>.Point(x: 4, y: 8)
-    /// let v = p - q  // Vector(dx: 6, dy: 12) — displacement from q to p
-    /// ```
+
     @inlinable
     @_disfavoredOverload
     public static func - (
@@ -34,22 +10,13 @@ extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
         rhs: borrowing Self
     ) -> Linear<Scalar, Space>.Vector<N> {
         var result = InlineArray<N, Scalar>(repeating: lhs.coordinates[0] - rhs.coordinates[0])
-        // WORKAROUND: plain for-loop, not .forEach.
-        // WHY: the IterationIntent autofix rewrite to .forEach breaks the
-        // linux-release build ('lhs' is borrowed and cannot be consumed) —
-        // the closure capture of a borrowing parameter is unsound.
-        // WHEN TO REMOVE: once the autofix soundness gap is fixed and
-        // reverified not to capture borrowing parameters.
-        // TRACKING: swift-foundations/swift-institute-linter-rules#49
+
         for i in 1..<N {
             result[i] = lhs.coordinates[i] - rhs.coordinates[i]
         }
         return Linear<Scalar, Space>.Vector(result)
     }
 
-    /// Translates point by adding displacement vector.
-    ///
-    /// Fundamental affine operation moving a position by a directional displacement.
     @inlinable
     @_disfavoredOverload
     public static func + (
@@ -57,20 +24,13 @@ extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
         rhs: borrowing Linear<Scalar, Space>.Vector<N>
     ) -> Self {
         var result = lhs.coordinates
-        // WORKAROUND: plain for-loop, not .forEach.
-        // WHY: the IterationIntent autofix rewrite to .forEach breaks the
-        // linux-release build ('lhs' is borrowed and cannot be consumed) —
-        // the closure capture of a borrowing parameter is unsound.
-        // WHEN TO REMOVE: once the autofix soundness gap is fixed and
-        // reverified not to capture borrowing parameters.
-        // TRACKING: swift-foundations/swift-institute-linter-rules#49
+
         for i in 0..<N {
             result[i] = lhs.coordinates[i] + rhs.components[i]
         }
         return Self(result)
     }
 
-    /// Translates point by subtracting displacement vector.
     @inlinable
     @_disfavoredOverload
     public static func - (
@@ -78,13 +38,7 @@ extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
         rhs: borrowing Linear<Scalar, Space>.Vector<N>
     ) -> Self {
         var result = lhs.coordinates
-        // WORKAROUND: plain for-loop, not .forEach.
-        // WHY: the IterationIntent autofix rewrite to .forEach breaks the
-        // linux-release build ('lhs' is borrowed and cannot be consumed) —
-        // the closure capture of a borrowing parameter is unsound.
-        // WHEN TO REMOVE: once the autofix soundness gap is fixed and
-        // reverified not to capture borrowing parameters.
-        // TRACKING: swift-foundations/swift-institute-linter-rules#49
+
         for i in 0..<N {
             result[i] = lhs.coordinates[i] - rhs.components[i]
         }

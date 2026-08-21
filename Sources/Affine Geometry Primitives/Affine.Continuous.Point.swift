@@ -1,28 +1,13 @@
-// Affine.Continuous.Point.swift
-// A fixed-size coordinate with compile-time known dimensions.
-
 import Affine_Primitives
 public import Dimension_Primitives
 public import Linear_Primitives
 
 extension Affine.Continuous {
-    /// Position in N-dimensional affine space with compile-time dimension checking.
-    ///
-    /// Represents absolute position rather than displacement, contrasting with `Linear.Vector`.
-    /// Points support affine operations: translate by vectors, compute displacement between points.
-    ///
-    /// ## Example
-    ///
-    /// ```swift
-    /// let origin: Affine<Double>.Point<2, MySpace> = .zero
-    /// let p = Affine<Double>.Point<2, MySpace>(x: .init(72.0), y: .init(144.0))
-    /// let displacement = p - origin  // Returns Linear<Double>.Vector<2, Space, MySpace>
-    /// ```
+
     public struct Point<let N: Int> {
-        /// Coordinate values stored as inline array for performance.
+
         public var coordinates: InlineArray<N, Scalar>
 
-        /// Creates a point from coordinate array.
         @inlinable
         public init(_ coordinates: consuming InlineArray<N, Scalar>) {
             self.coordinates = coordinates
@@ -32,10 +17,8 @@ extension Affine.Continuous {
 
 extension Affine.Continuous.Point: Sendable where Scalar: Sendable {}
 
-// MARK: - Equatable
-
 extension Affine.Continuous.Point: Equatable where Scalar: Equatable {
-    /// Whether two points have equal coordinates in every dimension.
+
     @inlinable
     public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         for i in 0..<N {
@@ -47,10 +30,8 @@ extension Affine.Continuous.Point: Equatable where Scalar: Equatable {
     }
 }
 
-// MARK: - Hashable
-
 extension Affine.Continuous.Point: Hashable where Scalar: Hashable {
-    /// Hashes each coordinate into the given hasher.
+
     @inlinable
     public func hash(into hasher: inout Hasher) {
         (0..<N).forEach { i in
@@ -59,24 +40,18 @@ extension Affine.Continuous.Point: Hashable where Scalar: Hashable {
     }
 }
 
-// MARK: - Typealiases
-
 extension Affine.Continuous {
-    /// A 2D point.
+
     public typealias Point2 = Point<2>
 
-    /// A 3D point.
     public typealias Point3 = Point<3>
 
-    /// A 4D point.
     public typealias Point4 = Point<4>
 }
 
-// MARK: - Codable
-
 #if !hasFeature(Embedded)
     extension Affine.Continuous.Point: Codable where Scalar: Codable {
-        /// Decodes a point from its encoded coordinate sequence.
+
         public init(from decoder: any Decoder) throws {
             var container = try decoder.unkeyedContainer()
             var coordinates = InlineArray<N, Scalar>(repeating: try container.decode(Scalar.self))
@@ -86,7 +61,6 @@ extension Affine.Continuous {
             self.coordinates = coordinates
         }
 
-        /// Encodes the point's coordinates as a sequence.
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.unkeyedContainer()
             for i in 0..<N {
@@ -96,10 +70,8 @@ extension Affine.Continuous {
     }
 #endif
 
-// MARK: - Subscript
-
 extension Affine.Continuous.Point {
-    /// Accesses coordinate at specified dimension index.
+
     @inlinable
     public subscript(index: Int) -> Scalar {
         get { coordinates[index] }
@@ -107,10 +79,8 @@ extension Affine.Continuous.Point {
     }
 }
 
-// MARK: - Functorial Map
-
 extension Affine.Continuous.Point {
-    /// Creates a point by transforming each coordinate of another point.
+
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Affine.Continuous<U, Space>.Point<N>,
@@ -123,7 +93,6 @@ extension Affine.Continuous.Point {
         self.init(coords)
     }
 
-    /// Transforms each coordinate using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
@@ -136,65 +105,54 @@ extension Affine.Continuous.Point {
     }
 }
 
-// MARK: - Zero
-
 extension Affine.Continuous.Point where Scalar: AdditiveArithmetic {
-    /// Origin point with all coordinates set to zero.
+
     @inlinable
     public static var zero: Self {
         Self(InlineArray(repeating: .zero))
     }
 }
 
-// MARK: - 2D Convenience
-
 extension Affine.Continuous.Point where N == 2 {
-    /// Horizontal coordinate position.
+
     @inlinable
     public var x: Affine.Continuous<Scalar, Space>.X {
         get { .init(coordinates[0]) }
         set { coordinates[0] = newValue.underlying }
     }
 
-    /// Vertical coordinate position.
     @inlinable
     public var y: Affine.Continuous<Scalar, Space>.Y {
         get { .init(coordinates[1]) }
         set { coordinates[1] = newValue.underlying }
     }
 
-    /// Creates 2D point from type-safe coordinate components.
     @inlinable
     public init(x: Affine.Continuous<Scalar, Space>.X, y: Affine.Continuous<Scalar, Space>.Y) {
         self.init([x.underlying, y.underlying])
     }
 }
 
-// MARK: - 3D Convenience
-
 extension Affine.Continuous.Point where N == 3 {
-    /// Horizontal coordinate position.
+
     @inlinable
     public var x: Affine.Continuous<Scalar, Space>.X {
         get { .init(coordinates[0]) }
         set { coordinates[0] = newValue.underlying }
     }
 
-    /// Vertical coordinate position.
     @inlinable
     public var y: Affine.Continuous<Scalar, Space>.Y {
         get { .init(coordinates[1]) }
         set { coordinates[1] = newValue.underlying }
     }
 
-    /// Depth coordinate position.
     @inlinable
     public var z: Affine.Continuous<Scalar, Space>.Z {
         get { .init(coordinates[2]) }
         set { coordinates[2] = newValue.underlying }
     }
 
-    /// Creates 3D point from type-safe coordinate components.
     @inlinable
     public init(
         x: Affine.Continuous<Scalar, Space>.X,
@@ -204,7 +162,6 @@ extension Affine.Continuous.Point where N == 3 {
         self.init([x.underlying, y.underlying, z.underlying])
     }
 
-    /// Creates 3D point by extending 2D point with depth coordinate.
     @inlinable
     public init(
         _ point2: Affine.Continuous<Scalar, Space>.Point2,
@@ -214,38 +171,32 @@ extension Affine.Continuous.Point where N == 3 {
     }
 }
 
-// MARK: - 4D Convenience
-
 extension Affine.Continuous.Point where N == 4 {
-    /// Horizontal coordinate position.
+
     @inlinable
     public var x: Affine.Continuous<Scalar, Space>.X {
         get { .init(coordinates[0]) }
         set { coordinates[0] = newValue.underlying }
     }
 
-    /// Vertical coordinate position.
     @inlinable
     public var y: Affine.Continuous<Scalar, Space>.Y {
         get { .init(coordinates[1]) }
         set { coordinates[1] = newValue.underlying }
     }
 
-    /// Depth coordinate position.
     @inlinable
     public var z: Affine.Continuous<Scalar, Space>.Z {
         get { .init(coordinates[2]) }
         set { coordinates[2] = newValue.underlying }
     }
 
-    /// Homogeneous coordinate for projective transformations.
     @inlinable
     public var w: Affine.Continuous<Scalar, Space>.W {
         get { .init(coordinates[3]) }
         set { coordinates[3] = newValue.underlying }
     }
 
-    /// Creates 4D point from type-safe coordinate components.
     @inlinable
     public init(
         x: Affine.Continuous<Scalar, Space>.X,
@@ -256,7 +207,6 @@ extension Affine.Continuous.Point where N == 4 {
         self.init([x.underlying, y.underlying, z.underlying, w.underlying])
     }
 
-    /// Creates 4D point by extending 3D point with homogeneous coordinate.
     @inlinable
     public init(
         _ point3: Affine.Continuous<Scalar, Space>.Point3,
@@ -266,10 +216,8 @@ extension Affine.Continuous.Point where N == 4 {
     }
 }
 
-// MARK: - Zip
-
 extension Affine.Continuous.Point {
-    /// Combines two points component-wise using custom function.
+
     @inlinable
     public static func zip(_ a: Self, _ b: Self, _ combine: (Scalar, Scalar) -> Scalar) -> Self {
         var result = a.coordinates
@@ -280,10 +228,8 @@ extension Affine.Continuous.Point {
     }
 }
 
-// MARK: - 2D Point Translation (AdditiveArithmetic)
-
 extension Affine.Continuous.Point where N == 2, Scalar: AdditiveArithmetic {
-    /// Returns point translated by displacement components.
+
     @inlinable
     public static func translated(
         _ point: Self,
@@ -293,49 +239,35 @@ extension Affine.Continuous.Point where N == 2, Scalar: AdditiveArithmetic {
         Self(x: point.x + dx, y: point.y + dy)
     }
 
-    /// Returns point translated by displacement components.
     @inlinable
     public func translated(dx: Linear<Scalar, Space>.Dx, dy: Linear<Scalar, Space>.Dy) -> Self {
         Self.translated(self, dx: dx, dy: dy)
     }
 
-    /// Returns point translated by displacement vector.
     @inlinable
     public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<2>) -> Self
     {
         Self(x: point.x + vector.dx, y: point.y + vector.dy)
     }
 
-    /// Returns point translated by displacement vector.
     @inlinable
     public func translated(by vector: Linear<Scalar, Space>.Vector<2>) -> Self {
         Self.translated(self, by: vector)
     }
 
-    /// Computes displacement vector from one point to another.
     @inlinable
     public static func vector(from point: Self, to other: Self) -> Linear<Scalar, Space>.Vector<2> {
         Linear<Scalar, Space>.Vector(dx: other.x - point.x, dy: other.y - point.y)
     }
 
-    /// Computes displacement vector from this point to another.
     @inlinable
     public func vector(to other: Self) -> Linear<Scalar, Space>.Vector<2> {
         Self.vector(from: self, to: other)
     }
 }
 
-// MARK: - 2D Point Distance (FloatingPoint)
-
 extension Affine.Continuous.Point where N == 2, Scalar: FloatingPoint {
 
-    /// Linearly interpolates between two points.
-    ///
-    /// - Parameters:
-    ///   - point: Starting point
-    ///   - other: Target point
-    ///   - t: Interpolation parameter where `0` returns `point` and `1` returns `other`
-    /// - Returns: The interpolated point.
     @inlinable
     public static func lerp(from point: Self, to other: Self, t: Scale<1, Scalar>) -> Self {
         Self(
@@ -344,29 +276,20 @@ extension Affine.Continuous.Point where N == 2, Scalar: FloatingPoint {
         )
     }
 
-    /// Linearly interpolates between this point and another.
-    ///
-    /// - Parameters:
-    ///   - other: Target point
-    ///   - t: Interpolation parameter where `0` returns `self` and `1` returns `other`
-    /// - Returns: The interpolated point.
     @inlinable
     public func lerp(to other: Self, t: Scale<1, Scalar>) -> Self {
         Self.lerp(from: self, to: other, t: t)
     }
 
-    /// Computes midpoint between two points.
-    /// Uses affine formula: p1 + (p2 - p1) / 2
     @inlinable
     public static func midpoint(from point: Self, to other: Self) -> Self {
-        // Displacement / 2 = scaled displacement, then add to coordinate
+
         Self(
             x: point.x + (other.x - point.x) / 2,
             y: point.y + (other.y - point.y) / 2
         )
     }
 
-    /// Computes midpoint between this point and another.
     @inlinable
     public func midpoint(to other: Self) -> Self {
         Self.midpoint(from: self, to: other)
@@ -375,24 +298,21 @@ extension Affine.Continuous.Point where N == 2, Scalar: FloatingPoint {
 
 extension Affine.Continuous.Point where N == 2, Scalar: FloatingPoint {
 
-    /// The distance namespace type for 2D points.
     public static var distance: Affine.Continuous<Scalar, Space>.Point<2>.Distance2.Type {
         Affine.Continuous<Scalar, Space>.Point<2>.Distance2.self
     }
 
-    /// A distance calculator anchored at this point.
     public var distance: Affine.Continuous<Scalar, Space>.Point<2>.Distance2 {
         .init(point: self)
     }
 
-    /// Distance calculations between 2D points.
     public struct Distance2 {
         var point: Affine.Continuous<Scalar, Space>.Point<2>
     }
 }
 
 extension Affine.Continuous.Point.Distance2 where N == 2, Scalar: FloatingPoint {
-    /// Squared distance between two points (avoids the square root).
+
     public static func squared(
         from point: Affine.Continuous<Scalar, Space>.Point<2>,
         to other: Affine.Continuous<Scalar, Space>.Point<2>
@@ -402,23 +322,20 @@ extension Affine.Continuous.Point.Distance2 where N == 2, Scalar: FloatingPoint 
         return dx * dx + dy * dy
     }
 
-    /// Squared distance from the anchor point to another (avoids the square root).
     public func squared(
         to other: Affine.Continuous<Scalar, Space>.Point<2>
     ) -> Affine.Continuous<Scalar, Space>.Area {
         Self.squared(from: point, to: other)
     }
 
-    /// Distance between two points.
     public static func from(
         _ point: Affine.Continuous<Scalar, Space>.Point<2>,
         to other: Affine.Continuous<Scalar, Space>.Point<2>
     ) -> Affine.Continuous<Scalar, Space>.Distance {
-        // sqrt(Area) = Magnitude = Distance
+
         sqrt(squared(from: point, to: other))
     }
 
-    /// Distance from the anchor point to another.
     public func callAsFunction(
         to other: Affine.Continuous<Scalar, Space>.Point<2>
     ) -> Affine.Continuous<Scalar, Space>.Distance {
@@ -426,10 +343,8 @@ extension Affine.Continuous.Point.Distance2 where N == 2, Scalar: FloatingPoint 
     }
 }
 
-// MARK: - 3D Point Translation (AdditiveArithmetic)
-
 extension Affine.Continuous.Point where N == 3, Scalar: AdditiveArithmetic {
-    /// Returns point translated by displacement components.
+
     @inlinable
     public static func translated(
         _ point: Self,
@@ -440,7 +355,6 @@ extension Affine.Continuous.Point where N == 3, Scalar: AdditiveArithmetic {
         Self(x: point.x + dx, y: point.y + dy, z: point.z + dz)
     }
 
-    /// Returns point translated by displacement components.
     @inlinable
     public func translated(
         dx: Linear<Scalar, Space>.Dx,
@@ -450,20 +364,17 @@ extension Affine.Continuous.Point where N == 3, Scalar: AdditiveArithmetic {
         Self.translated(self, dx: dx, dy: dy, dz: dz)
     }
 
-    /// Returns point translated by displacement vector.
     @inlinable
     public static func translated(_ point: Self, by vector: Linear<Scalar, Space>.Vector<3>) -> Self
     {
         Self(x: point.x + vector.dx, y: point.y + vector.dy, z: point.z + vector.dz)
     }
 
-    /// Returns point translated by displacement vector.
     @inlinable
     public func translated(by vector: Linear<Scalar, Space>.Vector<3>) -> Self {
         Self.translated(self, by: vector)
     }
 
-    /// Computes displacement vector from one point to another.
     @inlinable
     public static func vector(from point: Self, to other: Self) -> Linear<Scalar, Space>.Vector<3> {
         Linear<Scalar, Space>.Vector(
@@ -473,35 +384,29 @@ extension Affine.Continuous.Point where N == 3, Scalar: AdditiveArithmetic {
         )
     }
 
-    /// Computes displacement vector from this point to another.
     @inlinable
     public func vector(to other: Self) -> Linear<Scalar, Space>.Vector<3> {
         Self.vector(from: self, to: other)
     }
 }
 
-// MARK: - 3D Point Distance (FloatingPoint)
-
 extension Affine.Continuous.Point where N == 3, Scalar: FloatingPoint {
 
-    /// The distance namespace type for 3D points.
     public static var distance: Affine.Continuous<Scalar, Space>.Point<3>.Distance3.Type {
         Affine.Continuous<Scalar, Space>.Point<3>.Distance3.self
     }
 
-    /// A distance calculator anchored at this point.
     public var distance: Affine.Continuous<Scalar, Space>.Point<3>.Distance3 {
         .init(point: self)
     }
 
-    /// Distance calculations between 3D points.
     public struct Distance3 {
         var point: Affine.Continuous<Scalar, Space>.Point<3>
     }
 }
 
 extension Affine.Continuous.Point.Distance3 where N == 3, Scalar: FloatingPoint {
-    /// Squared distance between two points (avoids the square root).
+
     public static func squared(
         from point: Affine.Continuous<Scalar, Space>.Point<3>,
         to other: Affine.Continuous<Scalar, Space>.Point<3>
@@ -512,23 +417,20 @@ extension Affine.Continuous.Point.Distance3 where N == 3, Scalar: FloatingPoint 
         return dx * dx + dy * dy + dz * dz
     }
 
-    /// Squared distance from the anchor point to another (avoids the square root).
     public func squared(
         to other: Affine.Continuous<Scalar, Space>.Point<3>
     ) -> Affine.Continuous<Scalar, Space>.Area {
         Self.squared(from: point, to: other)
     }
 
-    /// Distance between two points.
     public static func from(
         _ point: Affine.Continuous<Scalar, Space>.Point<3>,
         to other: Affine.Continuous<Scalar, Space>.Point<3>
     ) -> Affine.Continuous<Scalar, Space>.Distance {
-        // sqrt(Area) = Magnitude = Distance
+
         sqrt(squared(from: point, to: other))
     }
 
-    /// Distance from the anchor point to another.
     public func callAsFunction(
         to other: Affine.Continuous<Scalar, Space>.Point<3>
     ) -> Affine.Continuous<Scalar, Space>.Distance {
